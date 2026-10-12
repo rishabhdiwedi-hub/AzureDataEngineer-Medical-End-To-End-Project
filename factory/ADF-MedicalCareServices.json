@@ -1,0 +1,15 @@
+{
+	"name": "ADF-MedicalCareServices",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "swedencentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "ff6ffc7f-f7a6-43aa-940f-5104def42c4d",
+		"tenantId": "6f50b06f-4b50-45cc-b8e6-b94eed563f0a"
+	}
+}
