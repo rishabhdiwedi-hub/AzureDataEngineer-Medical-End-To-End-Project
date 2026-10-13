@@ -1,0 +1,19 @@
+{
+	"name": "LS_DatabricksMedicalProject",
+	"properties": {
+		"annotations": [],
+		"type": "AzureDatabricks",
+		"typeProperties": {
+			"domain": "https://adb-7405618819336085.5.azuredatabricks.net",
+			"accessToken": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_AzureKeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "AzureDatabricks-Token"
+			},
+			"existingClusterId": "1012-191954-t721ef2a"
+		}
+	}
+}
