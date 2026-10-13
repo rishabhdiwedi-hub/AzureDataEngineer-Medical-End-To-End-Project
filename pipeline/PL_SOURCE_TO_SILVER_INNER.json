@@ -120,6 +120,84 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "Landing to Bronze",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Source to Landing",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 2,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Azure-Medical-Project/AzureDataEngineer-Medical-End-To-End-Project/Landing_to_Bronze",
+					"baseParameters": {
+						"Landing Timestamp": {
+							"value": "@variables('Start Time')",
+							"type": "Expression"
+						},
+						"Source System": {
+							"value": "@activity('Read Table Details').output.firstRow.source_system",
+							"type": "Expression"
+						},
+						"Table Name": {
+							"value": "@activity('Read Table Details').output.firstRow.source_system.bronze_table_name",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_DatabricksMedicalProject",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Bronze to Silver",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Landing to Bronze",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 2,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Azure-Medical-Project/AzureDataEngineer-Medical-End-To-End-Project/Bronze_To_Silver",
+					"baseParameters": {
+						"Landing Timestamp": {
+							"value": "@variables('Start Time')",
+							"type": "Expression"
+						},
+						"Table Name": {
+							"value": "@activity('Read Table Details').output.firstRow.source_system.silver_table_name",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_DatabricksMedicalProject",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"parameters": {
