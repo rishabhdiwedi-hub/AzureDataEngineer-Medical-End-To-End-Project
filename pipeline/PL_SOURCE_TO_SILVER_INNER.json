@@ -143,15 +143,15 @@
 				"typeProperties": {
 					"notebookPath": "/Azure-Medical-Project/AzureDataEngineer-Medical-End-To-End-Project/Landing_to_Bronze",
 					"baseParameters": {
-						"Landing Timestamp": {
+						"landing_timestamp": {
 							"value": "@variables('Start Time')",
 							"type": "Expression"
 						},
-						"Source System": {
+						"source_system": {
 							"value": "@activity('Read Table Details').output.firstRow.source_system",
 							"type": "Expression"
 						},
-						"Table Name": {
+						"table_name": {
 							"value": "@activity('Read Table Details').output.firstRow.bronze_table_name",
 							"type": "Expression"
 						}
