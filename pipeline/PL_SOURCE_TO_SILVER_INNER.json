@@ -262,7 +262,7 @@
 					},
 					"ifTrueActivities": [
 						{
-							"name": "Read Watermark Value",
+							"name": "Read watermark",
 							"type": "Lookup",
 							"dependsOn": [],
 							"policy": {
@@ -286,16 +286,15 @@
 								"dataset": {
 									"referenceName": "AzureSqlTable",
 									"type": "DatasetReference"
-								},
-								"firstRowOnly": false
+								}
 							}
 						},
 						{
-							"name": "Store Watermark Value",
+							"name": "Store watermark value",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "Read Watermark Value",
+									"activity": "Read watermark",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -309,7 +308,7 @@
 							"typeProperties": {
 								"variableName": "watermark_value",
 								"value": {
-									"value": "@activity('Read Watermark Value').output.watermark_value",
+									"value": "@activity('Read watermark').output.firstRow.watermark_value",
 									"type": "Expression"
 								}
 							}
