@@ -9,6 +9,10 @@
 			"env": {
 				"type": "string",
 				"value": "DEV"
+			},
+			"logic_apps_url": {
+				"type": "string",
+				"value": "https://prod-11.swedencentral.logic.azure.com:443/workflows/6f7bd1856c554832b8fa74f10fe76d13/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=cwzR5dvyDWVMSIADzQc0RwPdTnlUr0r5OQLUVNjTNjg"
 			}
 		},
 		"trustModeClaimForMi": {
