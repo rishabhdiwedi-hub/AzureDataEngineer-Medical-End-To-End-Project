@@ -1,6 +1,12 @@
 {
 	"name": "ADF-MedicalCareServices",
 	"properties": {
+		"globalParameters": {
+			"email_receipent": {
+				"type": "string",
+				"value": "rishabh.diwedi@gmail.com"
+			}
+		},
 		"trustModeClaimForMi": {
 			"value": "Disabled",
 			"editable": true
