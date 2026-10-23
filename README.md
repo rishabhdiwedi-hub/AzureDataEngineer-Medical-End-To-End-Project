@@ -1,62 +1,56 @@
 # Azure Data Engineering End-to-End Project
 
-This repository contains an end-to-end Azure Data Engineering project focused on the healthcare and medical domain. It demonstrates how to ingest, store, transform, and curate medical data using Azure Data Factory, Azure Databricks, Azure Data Lake Storage, Azure SQL, and PostgreSQL.
+<div align="center">
 
-The project follows a modern lakehouse-style approach where raw source data is landed, processed into Bronze and Silver layers, and then transformed into Gold analytical datasets for reporting and business insights.
+![Azure Data Engineering](https://img.shields.io/badge/Azure-Data%20Engineering-0078D4?style=for-the-badge&logo=microsoftazure)
+![Databricks](https://img.shields.io/badge/Databricks-PySpark-FF3621?style=for-the-badge&logo=databricks)
+![ADF](https://img.shields.io/badge/ADF-Orchestration-5C2D91?style=for-the-badge&logo=microsoftazure)
+![Status](https://img.shields.io/badge/Status-Project%20Implementation-success?style=for-the-badge)
 
-## Project Objective
+</div>
 
-The goal of this project is to build a robust data pipeline that can:
+This repository is an end-to-end Azure Data Engineering project for a healthcare/medical analytics use case. It demonstrates how to ingest, process, transform, and curate medical data using Azure Data Factory, Databricks, ADLS, Azure SQL, PostgreSQL, and analytics-ready reporting layers.
 
-- Ingest data from multiple source systems
-- Store raw landing data in a controlled manner
-- Process data into a consistent Bronze layer
-- Clean, deduplicate, and standardize data in Silver
-- Produce analytic-ready Gold datasets for healthcare reporting
-- Orchestrate end-to-end execution using Azure Data Factory
+The project follows a modern lakehouse architecture, where raw data moves from source systems into a landing zone, then through Bronze, Silver, and Gold layers for downstream analytics.
+
+## Project Overview
+
+The objective of this project is to build a scalable and reliable data pipeline that can:
+
+- ingest healthcare-related data from multiple source systems
+- store raw files in a landing zone
+- process data into a Bronze layer for raw persistence
+- clean, validate, and standardize data in a Silver layer
+- generate business-ready analytical datasets in Gold
+- orchestrate the full workflow with Azure Data Factory
+
+This is a practical example of how organizations can build a cloud-native, medallion-style data platform for healthcare analytics, operational reporting, and patient-centric insights.
 
 ## Business Use Case
 
-This project models a healthcare analytics scenario using medical data such as:
+The repository simulates a medical/healthcare domain where structured and semi-structured datasets are used for:
 
-- Hospital records
-- Patient information
-- Lab test results
-- Clinical analytics and trends
-- Daily summaries and patient-level insights
+- patient analytics
+- hospital and department-level reporting
+- lab test trend analysis
+- daily summary metrics
+- trend detection and healthcare insights
 
-The architecture is designed to support operational reporting, patient insights, and trend analysis for healthcare stakeholders.
+The solution is designed to support KPI reporting and operational monitoring for healthcare teams and business stakeholders.
 
-## Repository Overview
+## Architecture
 
-This repository contains the complete Azure Data Factory and Databricks implementation for the project.
-
-### Key folders and assets
-
-| Path | Description |
-| --- | --- |
-| `Landing_to_Bronze.ipynb` | Ingests raw landing files into the Bronze layer in Databricks |
-| `Bronze_To_Silver.ipynb` | Reads Bronze data and loads/updates Silver tables using FULL, APPEND, and MERGE logic |
-| `Prepare calender table.ipynb` | Builds a calendar table used for time-based reporting and analytics |
-| `Gold/` | Contains curated analytical notebooks and outputs for metric dashboards and business summaries |
-| `dataset/` | Defines dataset objects used in Azure Data Factory |
-| `factory/` | Contains the ADF factory configuration |
-| `linkedService/` | Stores Azure and source system connection definitions |
-| `pipeline/` | Contains orchestration pipelines like master, source-to-silver, and silver-to-gold flows |
-
-## Project Architecture
-
-The solution follows a medallion/lakehouse architecture:
+The project architecture follows a layered medallion design:
 
 ```mermaid
 flowchart LR
-    A[Source Systems\nPostgreSQL / ADLS CSV / Parquet] --> B[Landing Zone]
-    B --> C[Azure Databricks\nLanding_to_Bronze Notebook]
-    C --> D[Bronze Layer\nRaw Data]
-    D --> E[Azure Databricks\nBronze_To_Silver Notebook]
-    E --> F[Silver Layer\nCurated Data]
-    F --> G[Gold Layer\nBI / Reporting Data]
-    G --> H[Power BI / Analytics]
+    A[Source Systems<br/>PostgreSQL / ADLS CSV / Parquet] --> B[Landing Zone]
+    B --> C[Azure Databricks<br/>Landing_to_Bronze Notebook]
+    C --> D[Bronze Layer<br/>Raw Data]
+    D --> E[Azure Databricks<br/>Bronze_To_Silver Notebook]
+    E --> F[Silver Layer<br/>Curated / Standardized Data]
+    F --> G[Gold Layer<br/>Analytics / Reporting Data]
+    G --> H[Power BI / Business Intelligence]
 
     I[Azure Data Factory] --> J[PL_MASTER]
     J --> K[PL_SOURCE_TO_SILVER_MAIN]
@@ -68,100 +62,161 @@ flowchart LR
     N --> I
 ```
 
-### Architecture Flow
+### Layered Workflow
 
-1. Source systems provide raw healthcare data.
-2. Data is landed into the ingestion layer in Azure Databricks storage.
-3. `Landing_to_Bronze.ipynb` validates the files and writes them to the Bronze table layer.
-4. `Bronze_To_Silver.ipynb` reads the Bronze data, adds metadata columns such as insert/update timestamps, and stores curated Silver tables.
-5. `PL_SOURCE_TO_SILVER_MAIN` and related ADF pipelines orchestrate the movement and transformation from source to Silver.
-6. `PL_SILVER_TO_GOLD` executes the transformation from Silver to Gold.
-7. Gold notebooks produce analytical outputs for dashboards and business analysis.
+1. Raw source data lands in the ingestion or landing layer.
+2. Databricks notebooks validate and load data into the Bronze layer.
+3. Bronze data is transformed and enriched in the Silver layer.
+4. Gold notebooks prepare analytical tables and insights for reporting.
+5. Azure Data Factory orchestrates the data movement and transformation pipeline end-to-end.
 
-## Data Processing Layers
+## Repository Structure
 
-### 1. Landing Layer
-The landing layer receives incoming files from source systems. Files are checked for existence and then copied into the Bronze layer with metadata such as `landing_timestamp` and `current_timestamp`.
+```text
+AzureDataEngineer-Medical-End-To-End-Project/
+├── Landing_to_Bronze.ipynb
+├── Bronze_To_Silver.ipynb
+├── Prepare calender table.ipynb
+├── README.md
+├── publish_config.json
+├── dataset/
+│   ├── AzureSqlTable.json
+│   ├── DS_ADLS_Parquet.json
+│   ├── DS_Binary_CSV.json
+│   └── DS_PostgreSql.json
+├── factory/
+│   └── ADF-MedicalCareServices.json
+├── linkedService/
+│   ├── LS_ADLS.json
+│   ├── LS_AzureKeyVault.json
+│   ├── LS_AzureSqlDatabase.json
+│   ├── LS_DatabricksMedicalProject.json
+│   └── LS_PostgreSQL.json
+├── pipeline/
+│   ├── PL_MASTER.json
+│   ├── PL_SILVER_TO_GOLD.json
+│   ├── PL_SOURCE_TO_SILVER_INNER.json
+│   ├── PL_SOURCE_TO_SILVER_MAIN.json
+│   └── pipeline1.json
+├── Gold/
+│   ├── NB_hospital_daily_summary.ipynb
+│   ├── NB_lab_test_trends.ipynb
+│   ├── NB_patient_360.ipynb
+│   └── sttm_silver_to_gold.xlsx
+└── ...
+```
 
-### 2. Bronze Layer
-The Bronze layer stores raw, immutable source data in a near-original format. This layer preserves the raw data for traceability and reprocessing.
+## Key Components
 
-### 3. Silver Layer
-The Silver layer performs data quality, standardization, and transformation tasks such as:
+### 1. Landing to Bronze Notebook
+The `Landing_to_Bronze.ipynb` notebook is responsible for:
 
-- handling incremental loads
-- applying merge logic
-- adding auditing fields
-- ensuring historical correctness
-- preparing clean tables for downstream reporting
+- validating the incoming landing path
+- checking whether files exist
+- reading CSV or Parquet files
+- adding metadata such as `landing_timestamp` and `current_timestamp`
+- writing the raw data into the Bronze table layer in Databricks
 
-### 4. Gold Layer
-The Gold layer contains business-ready, analytics-optimized datasets. It is used for KPI dashboards, patient summaries, and trend analysis.
+### 2. Bronze to Silver Notebook
+The `Bronze_To_Silver.ipynb` notebook handles:
+
+- reading Bronze data for a specific landing timestamp
+- adding timestamps such as `insert_timestamp` and `update_timestamp`
+- supporting `FULL`, `APPEND`, and `MERGE` loading patterns
+- writing the cleaned data into Silver tables
+
+This notebook is designed for incremental and historical data processing, which is essential for maintaining accurate healthcare records.
+
+### 3. Gold Layer Analytics
+The `Gold/` folder contains notebooks used for downstream reporting and insight generation, such as:
+
+- hospital daily summaries
+- lab test trends
+- patient-level analytics
+
+These outputs are meant for dashboards or business intelligence consumption.
+
+### 4. Azure Data Factory Pipelines
+The `pipeline/` directory contains the orchestration logic to run the project end-to-end. The main orchestration pipeline is:
+
+- `PL_MASTER.json`
+
+This pipeline coordinates the movement from source to Silver and then into Gold, with dependency handling between stages.
+
+## Data Flow
+
+A typical execution sequence in this project looks like this:
+
+1. Source data is received from PostgreSQL or ADLS files.
+2. Files are landed into a landing path in Databricks.
+3. `Landing_to_Bronze` reads and writes them into the Bronze layer.
+4. `Bronze_To_Silver` validates and transforms the raw records.
+5. Data is persisted in Silver for analytics-ready use.
+6. `PL_SILVER_TO_GOLD` and Gold notebooks create curated outputs.
+7. Business dashboards and reports consume the Gold layer.
 
 ## Azure Services Used
 
-- Azure Data Factory (ADF) for orchestration
-- Azure Databricks for data engineering and transformation
-- Azure Data Lake Storage (ADLS) for storage layers
-- Azure SQL Database for structured data consumption
-- PostgreSQL for source data integration
-- Azure Key Vault for secure secret management
-- Delta Lake / Databricks tables for scalable table storage
+- Azure Data Factory (ADF) — orchestration and workflow scheduling
+- Azure Databricks — transformation and notebook-based data engineering
+- Azure Data Lake Storage (ADLS) — raw and processed storage
+- Azure SQL Database — structured data storage and analytics integration
+- PostgreSQL — source system connectivity
+- Azure Key Vault — secure secret and connection management
+- Delta Tables — reliable transactional storage in Databricks
 
-## Orchestration Details
-
-The repository includes ADF pipeline definitions such as:
-
-- `PL_MASTER.json` — master orchestration pipeline
-- `PL_SOURCE_TO_SILVER_MAIN.json` — source-to-silver pipeline
-- `PL_SOURCE_TO_SILVER_INNER.json` — inner source transformation flow
-- `PL_SILVER_TO_GOLD.json` — transformation from silver to gold
-
-The factory configuration file `factory/ADF-MedicalCareServices.json` defines the Azure Data Factory environment used by the project.
-
-## Gold Analytics Outputs
-
-The Gold folder contains notebooks for analytical summaries, including:
-
-- `NB_hospital_daily_summary.ipynb`
-- `NB_lab_test_trends.ipynb`
-- `NB_patient_360.ipynb`
-
-These notebooks support operational reporting and insight generation over the curated healthcare datasets.
-
-## Example Data Flow
-
-A typical workflow in this project is:
-
-- Source data arrives from PostgreSQL or ADLS CSV files
-- Databricks notebooks process the landing files
-- Data is stored in Bronze tables
-- Silver transformation applies logic and updates tables
-- Gold notebooks create daily summaries and patient analytics
-- Azure Data Factory coordinates the process end-to-end
-
-## Summary
-
-This project is a practical example of building a cloud-native healthcare data platform using Microsoft Azure services. It demonstrates how to design and implement a data pipeline that supports ingestion, transformation, data quality, orchestration, and analytics in a modern enterprise environment.
-
-## Technologies Used
+## Technologies
 
 - Python
 - PySpark
-- Azure Databricks
+- SQL
 - Azure Data Factory
+- Azure Databricks
+- Azure Key Vault
 - Azure Data Lake Storage
-- Azure SQL
 - PostgreSQL
-- Delta Tables
+- Azure SQL Database
+- Delta Lake
 
-## Notes
+## Prerequisites
 
-This repository is a project implementation and can be extended with:
+To run or extend this project, you should have:
 
-- automated testing
-- CI/CD deployment automation
-- monitoring and alerting
+- an Azure subscription
+- Azure Data Factory configured
+- Databricks workspace and cluster access
+- ADLS and Key Vault access
+- source system connectivity (PostgreSQL / CSV / Parquet)
+- permissions to create and manage tables in Databricks
+
+## How to Use This Repository
+
+1. Clone the repository.
+2. Review the project notebooks in the root folder.
+3. Configure the linked services and secrets in Azure Key Vault.
+4. Validate the source systems and landing locations.
+5. Run the ADF pipelines in order:
+   - source-to-silver pipeline
+   - silver-to-gold pipeline
+6. Use the Gold notebooks to analyze the curated datasets.
+
+## Possible Extensions
+
+This project can be enhanced by adding:
+
+- automated CI/CD deployment for ADF and notebooks
+- data quality checks and validation rules
+- alerting and monitoring
 - Power BI dashboard integration
-- additional data quality rules
-- advanced Medallion architecture improvements
+- incremental metadata tracking and lineage
+- advanced governance and cataloging
+
+## Summary
+
+This repository is a practical Azure-based data engineering implementation for a medical analytics use case. It demonstrates how to build a robust, scalable, and production-ready ETL/ELT architecture using Azure-native services and a medallion-style data platform.
+
+It combines ingestion, transformation, orchestration, and reporting to provide a complete end-to-end example of modern data engineering in the cloud.
+
+## License
+
+This project is intended for educational and demonstration purposes. Please ensure compliance with your organization’s licensing and security policies before production deployment.
