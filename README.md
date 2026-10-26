@@ -1,4 +1,5 @@
 # Azure Data Engineering End-to-End Project
+<img width="1536" height="1024" alt="Azure Data Factory Metadata Pipeline Architecture" src="https://github.com/user-attachments/assets/eef02da4-d9e1-4680-b1a4-5bfb852d8bba" />
 
 <div align="center">
 
